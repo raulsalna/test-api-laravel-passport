@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Client Credentials</title>
+</head>
+<body>
+	<div id="wrapper">
+		<form method="POST">
+			<input type="submit" id="resources" value="Obtener Recursos" />
+		</form>
+	</div>
+	<div class="padre" >
+	<table class="colapsado" border="1">
+		<thead>
+			<tr>
+				<th scope="col">id</th>
+				<th  scope="col">Titulo</th>
+				<th  scope="col">Contenido</th>
+			</tr>
+		</thead>
+		<tbody id="cuerpoTabla">
+
+		</tbody>
+	</table>
+</div>
+
+	<script>
+		let datos=[];
+		
+		(function () {
+
+			'use strict';
+
+			let resources = document.getElementById('resources');
+
+			resources.addEventListener('click', function (e) {
+				e.preventDefault();
+				let token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6ImEyYWQ2YzY0NDAxYTZkMzc4YWM4MTZhNDMwMzEwY2YzNTk2NDUzMzFhZjNiODNlNjExZThhNjYzYWVhMzZjMmU1NGIxY2U0NzU0Yjc5NDI3In0.eyJhdWQiOiIxIiwianRpIjoiYTJhZDZjNjQ0MDFhNmQzNzhhYzgxNmE0MzAzMTBjZjM1OTY0NTMzMWFmM2I4M2U2MTFlOGE2NjNhZWEzNmMyZTU0YjFjZTQ3NTRiNzk0MjciLCJpYXQiOjE2NTI4OTgxNzksIm5iZiI6MTY1Mjg5ODE3OSwiZXhwIjoxNjg0NDM0MTc5LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.h0nduk_gU4sd2fg5HFZnx4MX-HCrs5QK88lLlCwolYeHzOtMDCOCN_Shc3QayWIEDgEKsE7_rQumMhHCDo6e9jSIEntar3-EtWgTtIfOZrGElGvVlF5b0S3nwjdV6CHA8Lulbw68nSxBiH94q-VLRzdILRyemuWCe0ly19eEs4SFdQeMsC3-16k2wD5_Su2rV6EvuWjXDDMhwdNfeERSBqeofADP0pnpu03w15sFgxXJHdXWj-AZ8BFtkRu0UiMUdm0wqXLBzzIaaOCP87i-jEXXmkk7Ld_3dS7xAYcsVfXOzNP3LaU9Dmebw1OZ4OCOK2fc-f2pv5RERdOSP5dSfTSLfJgU2a92G0Zj1R5GxBCFgy2XG5DZjoPiyddNQDP-1e4McsB326Nch4E0pip451qMGdV6kJciM2jqqDdJHzv-FcdSHMp56DMh6WOv9XFYT62PKowm8RMG0uUoxa2_M-9fiHtOWzaaf89Z0brNlw6x7t9ZIAlR_--iYCNM3P_GMjUL5iKeGuY41A-8TRa2Y7nL6s4V3vvfYhE9KUM3ryNNsCMQjJaNjqNwu9WF8OubVevuetbjhrHuG8NwrWedUCMcLLk7OfxJfyYKqK0BP-HV5BCVqDnmqimeB80R1Q3QZKLWmu4-c1icNGFxX9isfOMubqyjQQ6xSJP7koUbGoU';
+
+				fetch('http://localhost:8080/api/clients/posts', {
+					method: 'GET',
+					headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' }
+				})
+				.then(response => {
+					return response.json();
+				})
+				.catch(error => console.error('Error:', error))
+				.then(data => {
+					
+					for(let i = 0; i < data.length; i++) {
+						datos.push(data[i]);
+						//console.log(data[i].body);  // (o el campo que necesites)
+					}
+	// Ahora dibujamos la tabla
+	let $cuerpoTabla = document.getElementById('cuerpoTabla');
+
+	// Recorrer todos los productos
+	datos.forEach(producto => {
+		// Crear un <tr>
+		const $tr = document.createElement("tr");
+		// Creamos el <td> de nombre y lo adjuntamos a tr
+		let $tdNombre = document.createElement("td");
+		$tdNombre.textContent = producto.id; // el textContent del td es el nombre
+		$tr.appendChild($tdNombre);
+		// El td de precio
+		let $tdPrecio = document.createElement("td");
+		$tdPrecio.textContent = producto.title;
+		$tr.appendChild($tdPrecio);
+		// El td del código
+		let $tdCodigo = document.createElement("td");
+		$tdCodigo.textContent = producto.body;
+		$tr.appendChild($tdCodigo);
+		// Finalmente agregamos el <tr> al cuerpo de la tabla
+		$cuerpoTabla.appendChild($tr);
+		// Y el ciclo se repite hasta que se termina de recorrer todo el arreglo
+	});
+					console.log(datos);  // (o el campo que necesites)
+				})
+				
+			});
+
+		})();
+
+	
+
+	</script>
+</body>
+<style type="text/css">
+	table.separado {border-collapse: separate;}
+
+
+	table.colapsado {border-collapse: collapse;	background: rgb(240, 240, 234);}
+
+	.padre {
+	
+		/*IMPORTANTE*/
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	  }
+	  
+
+
+
+	</style>
+
+</html>
